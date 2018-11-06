@@ -27,7 +27,7 @@ target_link_libraries(convert_to_hdf5 LP_MP-QAP m stdc++ pthread HDF5)
 foreach( source_file ${SOURCE_FILES} )
    string( REPLACE ".cpp" "" executable_file ${source_file} )
    add_executable( ${executable_file} ${source_file})
-   target_link_libraries( ${executable_file} LP_MP-QAP m stdc++ pthread )
+   target_link_libraries( ${executable_file} LP_MP-QAP graph_matching_input m stdc++ pthread )
 endforeach( source_file ${SOURCE_FILES} )
 
 # with proximal bundle
