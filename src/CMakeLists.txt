@@ -50,9 +50,9 @@ endforeach( source_file ${SOURCE_FILES} )
 if(WITH_GUROBI)
    SET(GUROBI_FILES
       # lp solver
-      graph_matching_mp_left_tightening_gurobi.cpp graph_matching_mp_right_tightening_gurobi.cpp graph_matching_mp_both_sides_tightening_gurobi.cpp 
-      graph_matching_mcf_left_tightening_gurobi.cpp graph_matching_mcf_right_tightening_gurobi.cpp graph_matching_mcf_both_sides_tightening_gurobi.cpp 
-      graph_matching_gm_left_tightening_gurobi.cpp graph_matching_gm_right_tightening_gurobi.cpp 
+      #graph_matching_mp_left_tightening_gurobi.cpp graph_matching_mp_right_tightening_gurobi.cpp graph_matching_mp_both_sides_tightening_gurobi.cpp 
+      #graph_matching_mcf_left_tightening_gurobi.cpp graph_matching_mcf_right_tightening_gurobi.cpp graph_matching_mcf_both_sides_tightening_gurobi.cpp 
+      #graph_matching_gm_left_tightening_gurobi.cpp graph_matching_gm_right_tightening_gurobi.cpp 
       #graph_matching_mp_uai_tightening_gurobi.cpp graph_matching_mcf_uai_tightening_gurobi.cpp graph_matching_gm_uai_tightening_gurobi.cpp
       )
 

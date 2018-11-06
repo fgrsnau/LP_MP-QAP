@@ -350,6 +350,7 @@ struct FMC_HUNGARIAN_BP_T {
    using ProblemDecompositionList = meta::list<mcf_gm_constructor>;
 };
 
+#if 0
 template<PairwiseConstruction PAIRWISE_CONSTRUCTION = PairwiseConstruction::Left> 
 struct FMC_LOCAL_SUBPROBLEM {
    using FMC_MCF_PARAM = FMC_LOCAL_SUBPROBLEM<PAIRWISE_CONSTRUCTION>;
@@ -397,6 +398,7 @@ struct FMC_LOCAL_SUBPROBLEM {
 
    using ProblemDecompositionList = meta::list<mrf_left,mrf_right,local_subproblem_constructor_left,local_subproblem_constructor_right>;
 };
+#endif
 
 
 // helper function for extracting types from FMC
