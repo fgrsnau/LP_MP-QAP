@@ -32,8 +32,8 @@ public:
         if(debug()) { std::cout << "check assignment\n"; }
 
         std::vector<bool> labels_taken(inverse_graph_.size(),false);
-        for(std::size_t i=0; i<left_mrf->get_number_of_variables(); ++i) {
-            const auto state = this->unaryFactor_[i]->GetFactor()->primal();
+        for(std::size_t i=0; i<left_mrf.get_number_of_variables(); ++i) {
+            const auto state = left_mrf.get_unary_factor(i)->GetFactor()->primal();
             if(state < graph_[i].size()) {
                 const auto label = graph_[i][state];
                 if(labels_taken[label]) { 
@@ -100,10 +100,10 @@ public:
 protected:
    void construct_empty_unary_factors(MRF_CONSTRUCTOR& mrf, const std::vector<std::vector<std::size_t>>& graph)
    {
-       assert(mrf.GetNumberOfVariables() == 0);
+       assert(mrf.get_number_of_variables() == 0);
        for(std::size_t i=0; i<graph.size(); ++i) {
            std::vector<REAL> costs(graph[i].size()+1, 0.0);
-           mrf.AddUnaryFactor(costs);
+           mrf.add_unary_factor(costs);
        }
    }
    void construct_unary_factors()
@@ -118,10 +118,10 @@ protected:
            const auto right_node = assignment.right;
            const auto cost = assignment.cost;
 
-           auto* left_factor = left_mrf.GetUnaryFactor(left_node);
+           auto* left_factor = left_mrf.get_unary_factor(left_node);
            (*left_factor->GetFactor())[left_counter[left_node]++] = 0.5*cost;
 
-           auto* right_factor = right_mrf.GetUnaryFactor(right_node);
+           auto* right_factor = right_mrf.get_unary_factor(right_node);
            (*right_factor->GetFactor())[right_counter[right_node]++] = 0.5*cost;
        }
    }
@@ -150,21 +150,19 @@ protected:
                }
            }();
 
-           if(!mrf.HasPairwiseFactor(node_1, node_2)) {
-               auto* f = mrf.AddEmptyPairwiseFactor(node_1, node_2);
-               // add infinities on diagonal
+           if(!mrf.has_pairwise_factor(node_1, node_2)) {
+               matrix<REAL> m(graph[node_1].size(), graph[node_2].size(), 0);
                for(std::size_t i1=0; i1<graph[node_1].size(); ++i1) {
                    for(std::size_t i2=0; i2<graph[node_2].size(); ++i2) {
                        if(graph[node_1][i1] == graph[node_2][i2]) {
-                           f->GetFactor()->cost(i1, i2) = std::numeric_limits<REAL>::infinity();
+                           m(i1, i2) = std::numeric_limits<REAL>::infinity();
                        }
                    }
                }
-
-
+               auto* f = mrf.add_pairwise_factor(node_1, node_2, m);
            } 
 
-           auto* f = mrf.GetPairwiseFactor(node_1, node_2);
+           auto* f = mrf.get_pairwise_factor(node_1, node_2);
 
            const auto index_1 = std::find(graph[node_1].begin(), graph[node_1].end(), label_1) - graph[node_1].begin();
            assert(label_1 < graph_[node_1].size());
@@ -204,12 +202,12 @@ public:
     {
         GRAPH_MATCHING_MRF_CONSTRUCTOR::construct();
 
-        std::vector<std::size_t> right_label_counter(this->right_mrf.GetNumberOfVariables(), 0);
+        std::vector<std::size_t> right_label_counter(this->right_mrf.get_number_of_variables(), 0);
         for(std::size_t i=0; i<this->graph_.size(); ++i) {
-            auto* l = this->left_mrf.GetUnaryFactor(i);
+            auto* l = this->left_mrf.get_unary_factor(i);
             for(std::size_t xi=0; xi<this->graph_[i].size(); ++xi) {
                 const auto state = this->graph_[i][xi];
-                auto* r = this->right_mrf.GetUnaryFactor(state);
+                auto* r = this->right_mrf.get_unary_factor(state);
                 this->lp_->template add_message<ASSIGNMENT_MESSAGE>(l, r, xi, right_label_counter[state]);
                 right_label_counter[state]++;
             }
@@ -263,7 +261,7 @@ public:
             std::vector<std::vector<std::size_t>> edgeId(no_left_nodes);
             for(std::size_t i=0; i<no_left_nodes; ++i) {
                 //assert(mrf_left.GetNumberOfLabels(i) == mcf->NoArcs(i));
-                auto *u = this->left_mrf.GetUnaryFactor(i);
+                auto *u = this->left_mrf.get_unary_factor(i);
                 const auto first_arc = f->GetFactor()->mcf_.first_outgoing_arc(i);
                 const auto no_arcs = f->GetFactor()->mcf_.no_outgoing_arcs(i);
                 auto* m = this->lp_->template add_message<MCF_MESSAGE>(u, f, first_arc, no_arcs);
@@ -277,7 +275,7 @@ public:
         {
             for(std::size_t i=0; i<no_right_nodes; ++i) {
                 //assert(mrf_right.GetNumberOfLabels(i) == mcf->NoArcs(no_left_nodes + i));
-                auto *u = this->right_mrf.GetUnaryFactor(i);
+                auto *u = this->right_mrf.get_unary_factor(i);
                 const auto first_arc = f->GetFactor()->mcf_.first_outgoing_arc(no_left_nodes+i);
                 const auto no_arcs = f->GetFactor()->mcf_.no_outgoing_arcs(no_left_nodes+i);
                 auto* m = this->lp_->template add_message<MCF_MESSAGE>(u, f, first_arc, no_arcs);

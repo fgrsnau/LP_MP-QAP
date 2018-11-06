@@ -70,7 +70,7 @@ struct FMC_MP {
    using FactorList = meta::list< UnaryFactor, PairwiseFactor>;
    using MessageList = meta::list< AssignmentConstraintMessage, UnaryPairwiseMessageLeftContainer, UnaryPairwiseMessageRightContainer>;//, UnaryMcfLabelingMessage >;
 
-   using mrf = StandardMrfConstructor<FMC_MP_PARAM,0,1,1,2>;
+   using mrf = mrf_constructor<FMC_MP_PARAM,0,1,1,2>;
    using gm_constructor = graph_matching_constructor<graph_matching_mrf_constructor<mrf>, AssignmentConstraintMessage>;
    using ProblemDecompositionList = meta::list<gm_constructor>;
 };
@@ -109,8 +109,8 @@ struct FMC_MP_T {
       PairwiseTriplet23MessageContainer 
          >;
 
-   using mrf = StandardMrfConstructor<FMC_MP_PARAM,0,1,1,2>;
-   using tightening_mrf = TighteningMRFProblemConstructor<mrf,2,3,4,5>;
+   using mrf = mrf_constructor<FMC_MP_PARAM,0,1,1,2>;
+   using tightening_mrf = tightening_mrf_constructor<mrf,2,3,4,5>;
    using gm_constructor = graph_matching_constructor_tightening< graph_matching_constructor< graph_matching_mrf_constructor<tightening_mrf>, AssignmentConstraintMessage> >;
    using ProblemDecompositionList = meta::list<gm_constructor>;
 };
@@ -155,7 +155,7 @@ struct FMC_MCF {
        AssignmentConstraintMessage
       >;
 
-   using mrf = StandardMrfConstructor<FMC_MCF_PARAM,0,1,1,2>;
+   using mrf = mrf_constructor<FMC_MCF_PARAM,0,1,1,2>;
    using gm_constructor = graph_matching_constructor< graph_matching_mrf_constructor<mrf>, AssignmentConstraintMessage>;
    using mcf_gm_constructor = graph_matching_mcf_constructor<gm_constructor, MinCostFlowAssignmentFactor, UnaryToAssignmentMessageContainer>;
    using ProblemDecompositionList = meta::list<mcf_gm_constructor>;
@@ -202,8 +202,8 @@ struct FMC_MCF_T {
        AssignmentConstraintMessage
       >;
 
-   using mrf = StandardMrfConstructor<FMC_MCF_PARAM,0,1,1,2>;
-   using tightening_mrf = TighteningMRFProblemConstructor<mrf,3,3,4,5>;
+   using mrf = mrf_constructor<FMC_MCF_PARAM,0,1,1,2>;
+   using tightening_mrf = tightening_mrf_constructor<mrf,3,3,4,5>;
    using gm_constructor = graph_matching_constructor< graph_matching_mrf_constructor<mrf>, AssignmentConstraintMessage>;
    using mcf_gm_constructor = graph_matching_constructor_tightening< graph_matching_mcf_constructor<gm_constructor, MinCostFlowAssignmentFactor, UnaryToAssignmentMessageContainer> >;
    using ProblemDecompositionList = meta::list<mcf_gm_constructor>;
@@ -229,7 +229,7 @@ struct FMC_GM {
    using FactorList = meta::list< UnaryFactor, PairwiseFactor>;//, McfLabelingFactor >;
    using MessageList = meta::list< UnaryPairwiseMessageLeftContainer, UnaryPairwiseMessageRightContainer>;//, UnaryMcfLabelingMessage >;
 
-   using mrf = StandardMrfConstructor<FMC_GM_PARAM,0,1,0,1>;
+   using mrf = mrf_constructor<FMC_GM_PARAM,0,1,0,1>;
    using gm_constructor = graph_matching_mrf_constructor<mrf>;
    using ProblemDecompositionList = meta::list<gm_constructor>;
 };
@@ -264,8 +264,8 @@ struct FMC_GM_T {
       PairwiseTriplet23MessageContainer 
          >;
 
-   using mrf = StandardMrfConstructor<FMC_GM_PARAM,0,1,0,1>;
-   using tightening_mrf = TighteningMRFProblemConstructor<mrf,2,2,3,4>;
+   using mrf = mrf_constructor<FMC_GM_PARAM,0,1,0,1>;
+   using tightening_mrf = tightening_mrf_constructor<mrf,2,2,3,4>;
    using gm_constructor = graph_matching_constructor_tightening< graph_matching_mrf_constructor<tightening_mrf> >;
    using ProblemDecompositionList = meta::list<gm_constructor>;
 };
@@ -299,7 +299,7 @@ struct FMC_HUNGARIAN_BP {
        UnaryToAssignmentMessageContainer
       >;
 
-   using mrf = StandardMrfConstructor<FMC_HUNGARIAN_BP,1,2,0,1>;
+   using mrf = mrf_constructor<FMC_HUNGARIAN_BP,1,2,0,1>;
    using gm_constructor = graph_matching_mrf_constructor<mrf>;
    using mcf_gm_constructor = graph_matching_mcf_constructor<gm_constructor, MinCostFlowAssignmentFactor, UnaryToAssignmentMessageContainer>;
    using ProblemDecompositionList = meta::list<mcf_gm_constructor>;
@@ -343,8 +343,8 @@ struct FMC_HUNGARIAN_BP_T {
        PairwiseTriplet23MessageContainer 
       >;
 
-   using mrf = StandardMrfConstructor<FMC_HUNGARIAN_BP_T,1,2,0,1>;
-   using tightening_mrf = TighteningMRFProblemConstructor<mrf,3,3,4,5>;
+   using mrf = mrf_constructor<FMC_HUNGARIAN_BP_T,1,2,0,1>;
+   using tightening_mrf = tightening_mrf_constructor<mrf,3,3,4,5>;
    using gm_constructor = graph_matching_mrf_constructor<tightening_mrf>;
    using mcf_gm_constructor = graph_matching_mcf_constructor<gm_constructor, MinCostFlowAssignmentFactor, UnaryToAssignmentMessageContainer>;
    using ProblemDecompositionList = meta::list<mcf_gm_constructor>;
